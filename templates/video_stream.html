@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aesthetic Video Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #1a1a1a; /* Dark background color */
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #video-container {
+            position: relative;
+            width: 80vw;
+            max-width: 800px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        #video-stream {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="video-container">
+        <video id="video-stream" autoplay muted loop playsinline></video>
+    </div>
+
+    <script>
+        var source = new EventSource('/video_feed');
+        var video = document.getElementById('video-stream');
+
+        source.onmessage = function(event) {
+            var videoBlob = new Blob([event.data], { type: 'video/mp4' });
+            var videoUrl = URL.createObjectURL(videoBlob);
+            video.src = videoUrl;
+        };
+    </script>
+</body>
+</html>
